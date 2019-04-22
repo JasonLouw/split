@@ -1,7 +1,8 @@
 # split
 IMY300 GAME -  COOP
 
-testing github
+testing github 
+added on the website
 
 adding on local
 
