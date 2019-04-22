@@ -4,7 +4,7 @@ IMY300 GAME -  COOP
 testing github 
 added on the website
 
-adding on local
+adding on local more
 
 HTTPS: https://github.com/JasonLouw/split.git
 
