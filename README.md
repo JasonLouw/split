@@ -1,4 +1,5 @@
 # split
 IMY300 GAME -  COOP
 
-SSH: https://github.com/JasonLouw/split.git
+hTTPS: https://github.com/JasonLouw/split.git
+SSH: git@github.com:JasonLouw/split.git
