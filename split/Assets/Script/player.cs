@@ -11,11 +11,14 @@ public class player : MonoBehaviour
     Rigidbody2D rb;//this is character this is how you affect its forces and movement
     float gravity;
     public bool position;//this indicates whether at top or bottom of map
-    public string rotation;
+    public string currentRotation;
+    public string wantedRotation;
+    bool changedRotation;
     // Start is called before the first frame update
     void Start()
     {
         rb.gravityScale = 0f;//this ensures normal game gravity doesnt influence character
+        changedRotation = true;
     }
 
     private void Awake()
@@ -55,11 +58,11 @@ public class player : MonoBehaviour
         if (Input.GetKey(KeyCode.A))
         {
             // rb.velocity = Vector2.up * jumpVelocity;
-            x += movementVelocity*-1;
+            x += movementVelocity * -1;
             move = true;
         }
 
-        if(move)
+        if (move)
         {
             rb.velocity = new Vector2(x, rb.velocity.y + y);
         }
@@ -67,43 +70,45 @@ public class player : MonoBehaviour
         {
             rb.velocity = new Vector2(0, rb.velocity.y + y);
         }
-       
+
+
     }
 
     public void rotate()
     {
-        if(rotation == "up")
+        if (wantedRotation == "up" && wantedRotation != currentRotation)
         {
             float x = rb.transform.position.x;
             float y = rb.transform.position.y;
-            float z = rb.transform.position.z;
-
-            Vector3 targetDir = new Vector3(0, 0, 90);// - rb.transform.position;
-
-            // The step size is equal to speed times frame time.
-            float step = 1f * Time.deltaTime;
-
-            Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, step, 0.0f);
-            Debug.DrawRay(transform.position, newDir, Color.red);
-
-            // Move our position a step closer to the target.
-            transform.rotation = Quaternion.LookRotation(newDir);
+            Vector3 targetDir = new Vector3(x-90, y, 0);
+            var relativePos = targetDir - transform.position;
+            var angle = Mathf.Atan2(relativePos.y, relativePos.x) * Mathf.Rad2Deg;
+            var rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+            transform.rotation = rotation;
+            currentRotation = wantedRotation;
         }
-        else if (rotation == "down")
+        else if (wantedRotation == "down"  && wantedRotation != currentRotation)
         {
-            
+            float x = rb.transform.position.x;
+            float y = rb.transform.position.y;
+            Vector3 targetDir = new Vector3(x+90, y, 0);
+            var relativePos = targetDir - transform.position;
+            var angle = Mathf.Atan2(relativePos.y, relativePos.x) * Mathf.Rad2Deg;
+            var rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+            transform.rotation = rotation;
+            currentRotation = wantedRotation;
         }
-        else if (rotation == "left")
+        else if (wantedRotation == "left" && wantedRotation != currentRotation)
         {
 
         }
-        else if (rotation == "right")
+        else if (wantedRotation == "right" && wantedRotation != currentRotation)
         {
 
         }
         else
         {
-            Debug.Log("ERROR! bad rotation value");
+            Debug.Log("not rotating");
         }
     }
 
@@ -112,12 +117,15 @@ public class player : MonoBehaviour
         float x = rb.transform.position.x;
         float y = rb.transform.position.y;
         transform.position = new Vector3(x, (float)(y * (-1.0)), 0);
+        changedRotation = false;
         if (position)
         {
+            wantedRotation = "up";
             position = false;
         }
         else
         {
+            wantedRotation = "down";
             position = true;
             //Debug.Log(rb.transform.position);
         }
