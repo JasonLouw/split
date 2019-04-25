@@ -4,22 +4,33 @@ using UnityEngine;
 
 public class player : MonoBehaviour
 {
-    [Range(1, 10)] public float jumpVelocity;
-    [Range(1, 10)] public float movementVelocity;
+    [Range(1, 10)] public float jumpVelocity;//how high you will probably jump
+    [Range(1, 10)] public float movementVelocity;//how fast you will move
     public float fallMultiplier = 2.5f;//how fast the character will fall
     public float lowJumpMultiplier = 2f;//force applied down when character mini jumps
     public float gravityMultiplier = 2f;//force applied down when character mini jumps
     Rigidbody2D rb;//this is character this is how you affect its forces and movement
-    public float gravity;
+    public float gravity;//the 9.81 gravity
     public bool position;//this indicates whether at top or bottom of map
-    public string currentRotation;
-    public string wantedRotation;
-    bool changedRotation;
+    public bool playerOne;//just a bool to decide which controls you use
+    public string currentRotation;//current direction you are facing
+    public string wantedRotation;//the rotation you going to next
+    bool changedRotation;//dono if i use this anymore
+    GameObject otherPlayer;//the other player
+    bool wantsToFlip;//went you want to a flip and are waiting for partner
+    bool allowedToFlip;//ensure you dont flip continously
     // Start is called before the first frame update
     void Start()
     {
         rb.gravityScale = 0f;//this ensures normal game gravity doesnt influence character
         changedRotation = true;
+        wantsToFlip = false;
+        allowedToFlip = true;
+
+        if(playerOne)
+             otherPlayer = GameObject.FindWithTag("playerTwo");
+         else
+              otherPlayer = GameObject.FindWithTag("playerOne");
     }
 
     private void Awake()
@@ -33,13 +44,34 @@ public class player : MonoBehaviour
     {
         betterJump();
         movement();
-        if (Input.GetKeyDown(KeyCode.S))
+
+        if ((!Input.GetKey(KeyCode.S) && playerOne) || (!Input.GetKey(KeyCode.DownArrow) && !playerOne))
         {
+            allowedToFlip = true;
+        }
+
+        if (((Input.GetKey(KeyCode.S) && playerOne) || (Input.GetKey(KeyCode.DownArrow) && !playerOne)) && otherPlayer.GetComponent<player>().getOtherFlip() && allowedToFlip)
+        {
+            otherPlayer.GetComponent<player>().flip();
             flip();
+            
+        }
+        else if((Input.GetKey(KeyCode.S) && playerOne) || (Input.GetKey(KeyCode.DownArrow) && !playerOne))
+        {
+            wantsToFlip = true;
+        }
+        else
+        {
+            wantsToFlip = false;
         }
         rotate();
         rb.AddForce(transform.up * gravity * gravityMultiplier * Time.deltaTime);//this is the gravity for the character
         //rb.AddForce(transform.right * gravity);
+    }
+
+    public bool getOtherFlip()
+    {
+        return wantsToFlip;
     }
 
     private void movement()
@@ -48,16 +80,16 @@ public class player : MonoBehaviour
         {
             bool move = false;
             float x = 0f, y = 0f;
-            if (Input.GetKeyDown(KeyCode.W))
+            if ((Input.GetKeyDown(KeyCode.W) && playerOne) || (Input.GetKeyDown(KeyCode.UpArrow) && !playerOne))
             {
                     y = -jumpVelocity;
             }
-            if (Input.GetKey(KeyCode.D))
+            if ((Input.GetKey(KeyCode.D) && playerOne) || (Input.GetKey(KeyCode.RightArrow) && !playerOne))
             {
                 x += movementVelocity;
                 move = true;
             }
-            if (Input.GetKey(KeyCode.A))
+            if ((Input.GetKey(KeyCode.A) && playerOne) || (Input.GetKey(KeyCode.LeftArrow) && !playerOne))
             {
                 x += movementVelocity * -1;
                 move = true;
@@ -76,16 +108,16 @@ public class player : MonoBehaviour
         {
             bool move = false;
             float x = 0f, y = 0f;
-            if (Input.GetKeyDown(KeyCode.W))
+            if ((Input.GetKeyDown(KeyCode.W) && playerOne) || (Input.GetKeyDown(KeyCode.UpArrow) && !playerOne))
             {
                     y = jumpVelocity;
             }
-            if (Input.GetKey(KeyCode.D))
+            if ((Input.GetKey(KeyCode.D) && playerOne) || (Input.GetKey(KeyCode.RightArrow) && !playerOne))
             {
                 x += movementVelocity;
                 move = true;
             }
-            if (Input.GetKey(KeyCode.A))
+            if ((Input.GetKey(KeyCode.A) && playerOne) || (Input.GetKey(KeyCode.LeftArrow) && !playerOne))
             {
                 x += movementVelocity * -1;
                 move = true;
@@ -104,16 +136,16 @@ public class player : MonoBehaviour
         {
             bool move = false;
             float x = 0f, y = 0f;
-            if (Input.GetKeyDown(KeyCode.W))
+            if ((Input.GetKeyDown(KeyCode.W) && playerOne) || (Input.GetKeyDown(KeyCode.UpArrow) && !playerOne))
             {
                 x = jumpVelocity;
             }
-            if (Input.GetKey(KeyCode.D))
+            if ((Input.GetKey(KeyCode.D) && playerOne) || (Input.GetKey(KeyCode.RightArrow) && !playerOne))
             {
                 y += movementVelocity;
                 move = true;
             }
-            if (Input.GetKey(KeyCode.A))
+            if ((Input.GetKey(KeyCode.A) && playerOne) || (Input.GetKey(KeyCode.LeftArrow) && !playerOne))
             {
                 y += movementVelocity * -1;
                 move = true;
@@ -132,16 +164,16 @@ public class player : MonoBehaviour
         {
             bool move = false;
             float x = 0f, y = 0f;
-            if (Input.GetKeyDown(KeyCode.W))
+            if ((Input.GetKeyDown(KeyCode.W) && playerOne) || (Input.GetKeyDown(KeyCode.UpArrow) && !playerOne))
             {
                 x = -jumpVelocity;
             }
-            if (Input.GetKey(KeyCode.D))
+            if ((Input.GetKey(KeyCode.D) && playerOne) || (Input.GetKey(KeyCode.RightArrow) && !playerOne))
             {
                 y += movementVelocity;
                 move = true;
             }
-            if (Input.GetKey(KeyCode.A))
+            if ((Input.GetKey(KeyCode.A) && playerOne) || (Input.GetKey(KeyCode.LeftArrow) && !playerOne))
             {
                 y += movementVelocity * -1;
                 move = true;
@@ -153,6 +185,7 @@ public class player : MonoBehaviour
             }
             else
             {
+                
                 rb.velocity = new Vector2(rb.velocity.x + x, 0);
             }
         }
@@ -214,6 +247,7 @@ public class player : MonoBehaviour
 
     public void flip()//flips over axis
     {
+        allowedToFlip = false;
         float x = rb.transform.position.x;
         float y = rb.transform.position.y;
         transform.position = new Vector3(x, (float)(y * (-1.0)), 0);
@@ -239,7 +273,7 @@ public class player : MonoBehaviour
             {
                 gravity = -9.81f * fallMultiplier;
             }
-            else if (rb.velocity.y > 0 && !Input.GetKey(KeyCode.W))//low jump
+            else if ((rb.velocity.y > 0 && !Input.GetKey(KeyCode.W) && playerOne) || (rb.velocity.y > 0 && !Input.GetKey(KeyCode.UpArrow) && !playerOne))//low jump
             {
                gravity = -9.81f * lowJumpMultiplier;
             }
@@ -254,7 +288,7 @@ public class player : MonoBehaviour
             {
                 gravity = -9.81f * fallMultiplier;
             }
-            else if (rb.velocity.y < 0 && !Input.GetKey(KeyCode.W))//low jump
+            else if ((rb.velocity.y < 0 && !Input.GetKey(KeyCode.W) && playerOne) || (rb.velocity.y < 0 && !Input.GetKey(KeyCode.UpArrow) && !playerOne))
             {
                 gravity = -9.81f * lowJumpMultiplier;
             }
@@ -269,7 +303,7 @@ public class player : MonoBehaviour
             {
                 gravity = -9.81f * fallMultiplier;
             }
-            else if (rb.velocity.x > 0 && !Input.GetKey(KeyCode.W))//low jump
+             else if ((rb.velocity.x > 0 && !Input.GetKey(KeyCode.W) && playerOne) || (rb.velocity.x > 0 && !Input.GetKey(KeyCode.UpArrow) && !playerOne))//low jump
             {
                 gravity = -9.81f * lowJumpMultiplier;
             }
@@ -284,7 +318,7 @@ public class player : MonoBehaviour
             {
                 gravity = -9.81f * fallMultiplier;
             }
-            else if (rb.velocity.x < 0 && !Input.GetKey(KeyCode.W))//low jump
+            else if ((rb.velocity.x < 0 && !Input.GetKey(KeyCode.W) && playerOne) || (rb.velocity.x < 0 && !Input.GetKey(KeyCode.UpArrow) && !playerOne))
             {
                 gravity = -9.81f * lowJumpMultiplier;
             }
@@ -307,7 +341,7 @@ public class player : MonoBehaviour
         }
     }
 
-      void OnTriggerExit2D(Collider2D collision)
+    void OnTriggerExit2D(Collider2D collision)
     {
         // other.attachedRigidbody.AddForce(-0.1F * other.attachedRigidbody.velocity);
 
