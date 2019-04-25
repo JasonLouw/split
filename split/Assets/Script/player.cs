@@ -8,8 +8,9 @@ public class player : MonoBehaviour
     [Range(1, 10)] public float movementVelocity;
     public float fallMultiplier = 2.5f;//how fast the character will fall
     public float lowJumpMultiplier = 2f;//force applied down when character mini jumps
+    public float gravityMultiplier = 2f;//force applied down when character mini jumps
     Rigidbody2D rb;//this is character this is how you affect its forces and movement
-    float gravity;
+    public float gravity;
     public bool position;//this indicates whether at top or bottom of map
     public string currentRotation;
     public string wantedRotation;
@@ -37,44 +38,129 @@ public class player : MonoBehaviour
             flip();
         }
         rotate();
-        rb.AddForce(transform.up * gravity);//this is the gravity for the character
+        rb.AddForce(transform.up * gravity * gravityMultiplier * Time.deltaTime);//this is the gravity for the character
+        //rb.AddForce(transform.right * gravity);
     }
 
     private void movement()
     {
-        bool move = false;
-        float x = 0f, y = 0f;
-        if (Input.GetKeyDown(KeyCode.W))
+        if(currentRotation == "up" )
         {
-            //rb.velocity = Vector2.up * jumpVelocity;
-            y = jumpVelocity;
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            // rb.velocity = Vector2.up * jumpVelocity;
-            x += movementVelocity;
-            move = true;
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            // rb.velocity = Vector2.up * jumpVelocity;
-            x += movementVelocity * -1;
-            move = true;
-        }
+            bool move = false;
+            float x = 0f, y = 0f;
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                    y = -jumpVelocity;
+            }
+            if (Input.GetKey(KeyCode.D))
+            {
+                x += movementVelocity;
+                move = true;
+            }
+            if (Input.GetKey(KeyCode.A))
+            {
+                x += movementVelocity * -1;
+                move = true;
+            }
 
-        if (move)
-        {
-            rb.velocity = new Vector2(x, rb.velocity.y + y);
+            if (move)
+            {
+                rb.velocity = new Vector2(x, rb.velocity.y + y);
+            }
+            else
+            {
+                rb.velocity = new Vector2(0, rb.velocity.y + y);
+            }
         }
-        else
+        else if(currentRotation == "down")
         {
-            rb.velocity = new Vector2(0, rb.velocity.y + y);
+            bool move = false;
+            float x = 0f, y = 0f;
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                    y = jumpVelocity;
+            }
+            if (Input.GetKey(KeyCode.D))
+            {
+                x += movementVelocity;
+                move = true;
+            }
+            if (Input.GetKey(KeyCode.A))
+            {
+                x += movementVelocity * -1;
+                move = true;
+            }
+
+            if (move)
+            {
+                rb.velocity = new Vector2(x, rb.velocity.y + y);
+            }
+            else
+            {
+                rb.velocity = new Vector2(0, rb.velocity.y + y);
+            }
+        }
+        else if(currentRotation == "left")
+        {
+            bool move = false;
+            float x = 0f, y = 0f;
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                x = jumpVelocity;
+            }
+            if (Input.GetKey(KeyCode.D))
+            {
+                y += movementVelocity;
+                move = true;
+            }
+            if (Input.GetKey(KeyCode.A))
+            {
+                y += movementVelocity * -1;
+                move = true;
+            }
+
+            if (move)
+            {
+                rb.velocity = new Vector2(rb.velocity.x + x,  y);
+            }
+            else
+            {
+                rb.velocity = new Vector2(rb.velocity.x + x, 0);
+            }
+        }
+        else //if rotation is right
+        {
+            bool move = false;
+            float x = 0f, y = 0f;
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                x = -jumpVelocity;
+            }
+            if (Input.GetKey(KeyCode.D))
+            {
+                y += movementVelocity;
+                move = true;
+            }
+            if (Input.GetKey(KeyCode.A))
+            {
+                y += movementVelocity * -1;
+                move = true;
+            }
+
+            if (move)
+            {
+                rb.velocity = new Vector2(rb.velocity.x + x,  y);
+            }
+            else
+            {
+                rb.velocity = new Vector2(rb.velocity.x + x, 0);
+            }
         }
 
 
     }
 
-    public void rotate()
+    public void rotate()//rotates the character to the specific location once per change of direction
     {
         if (wantedRotation == "up" && wantedRotation != currentRotation)
         {
@@ -100,19 +186,33 @@ public class player : MonoBehaviour
         }
         else if (wantedRotation == "left" && wantedRotation != currentRotation)
         {
-
+            float x = rb.transform.position.x;
+            float y = rb.transform.position.y;
+            Vector3 targetDir = new Vector3(x, y-90, 0);
+            var relativePos = targetDir - transform.position;
+            var angle = Mathf.Atan2(relativePos.y, relativePos.x) * Mathf.Rad2Deg;
+            var rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+            transform.rotation = rotation;
+            currentRotation = wantedRotation;
         }
         else if (wantedRotation == "right" && wantedRotation != currentRotation)
         {
-
+            float x = rb.transform.position.x;
+            float y = rb.transform.position.y;
+            Vector3 targetDir = new Vector3(x, y+90, 0);
+            var relativePos = targetDir - transform.position;
+            var angle = Mathf.Atan2(relativePos.y, relativePos.x) * Mathf.Rad2Deg;
+            var rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+            transform.rotation = rotation;
+            currentRotation = wantedRotation;
         }
         else
         {
-            Debug.Log("not rotating");
+           // Debug.Log("not rotating");
         }
     }
 
-    public void flip()
+    public void flip()//flips over axis
     {
         float x = rb.transform.position.x;
         float y = rb.transform.position.y;
@@ -131,21 +231,67 @@ public class player : MonoBehaviour
         }
     }
 
-    private void betterJump()
+    private void betterJump()//better jump controls fall speeds
     {
-        if (rb.velocity.y < 0)//faster fall
+        if(currentRotation == "down")
         {
-            //rb.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
-            gravity = -18.0f;
+            if (rb.velocity.y < 0)//faster fall
+            {
+                gravity = -9.81f * fallMultiplier;
+            }
+            else if (rb.velocity.y > 0 && !Input.GetKey(KeyCode.W))//low jump
+            {
+               gravity = -9.81f * lowJumpMultiplier;
+            }
+            else
+            {
+                gravity = -9.81f;
+            }
         }
-        else if (rb.velocity.y > 0 && !Input.GetKey(KeyCode.W))//low jump
+        else if(currentRotation == "up")
         {
-            //rb.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
-            gravity = -25.0f;
+            if (rb.velocity.y > 0)//faster fall
+            {
+                gravity = -9.81f * fallMultiplier;
+            }
+            else if (rb.velocity.y < 0 && !Input.GetKey(KeyCode.W))//low jump
+            {
+                gravity = -9.81f * lowJumpMultiplier;
+            }
+            else
+            {
+                gravity = -9.81f;
+            }
         }
-        else
+        else if(currentRotation == "left")
         {
-            gravity = -9.81f;
+            if (rb.velocity.x < 0)//faster fall
+            {
+                gravity = -9.81f * fallMultiplier;
+            }
+            else if (rb.velocity.x > 0 && !Input.GetKey(KeyCode.W))//low jump
+            {
+                gravity = -9.81f * lowJumpMultiplier;
+            }
+            else
+            {
+                gravity = -9.81f;
+            }
+        }
+        else if(currentRotation == "right")
+        {
+            if (rb.velocity.x > 0)//faster fall
+            {
+                gravity = -9.81f * fallMultiplier;
+            }
+            else if (rb.velocity.x < 0 && !Input.GetKey(KeyCode.W))//low jump
+            {
+                gravity = -9.81f * lowJumpMultiplier;
+            }
+            else
+            {
+                gravity = -9.81f;
+            }
         }
     }
 
