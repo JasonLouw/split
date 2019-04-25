@@ -295,4 +295,30 @@ public class player : MonoBehaviour
         }
     }
 
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        // other.attachedRigidbody.AddForce(-0.1F * other.attachedRigidbody.velocity);
+
+        if (collision.gameObject.tag == "bubble")
+        {
+            gravityBubble bubble = (gravityBubble)collision.gameObject.GetComponent(typeof(gravityBubble));
+            Debug.Log("in the bubble"+bubble.gravityDirection);
+            wantedRotation = bubble.gravityDirection;
+        }
+    }
+
+      void OnTriggerExit2D(Collider2D collision)
+    {
+        // other.attachedRigidbody.AddForce(-0.1F * other.attachedRigidbody.velocity);
+
+        if (collision.gameObject.tag == "bubble")
+        {
+            gravityBubble bubble = (gravityBubble)collision.gameObject.GetComponent(typeof(gravityBubble));
+            if(0 > rb.transform.position.y)
+                wantedRotation = "up";
+            else
+                wantedRotation = "down";
+        }
+    }
+
 }
