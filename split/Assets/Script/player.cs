@@ -15,7 +15,7 @@ public class player : MonoBehaviour
     public bool playerOne;//just a bool to decide which controls you use
     public string currentRotation;//current direction you are facing
     public string wantedRotation;//the rotation you going to next
-    bool changedRotation;//dono if i use this anymore
+    //bool changedRotation;//dono if i use this anymore
     GameObject otherPlayer;//the other player
     bool wantsToFlip;//went you want to a flip and are waiting for partner
     bool allowedToFlip;//ensure you dont flip continously
@@ -23,7 +23,7 @@ public class player : MonoBehaviour
     void Start()
     {
         rb.gravityScale = 0f;//this ensures normal game gravity doesnt influence character
-        changedRotation = true;
+        //changedRotation = true;
         wantsToFlip = false;
         allowedToFlip = true;
 
@@ -251,7 +251,7 @@ public class player : MonoBehaviour
         float x = rb.transform.position.x;
         float y = rb.transform.position.y;
         transform.position = new Vector3(x, (float)(y * (-1.0)), 0);
-        changedRotation = false;
+        //changedRotation = false;
         if (position)
         {
             wantedRotation = "up";

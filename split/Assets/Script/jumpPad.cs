@@ -18,7 +18,7 @@ public class jumpPad : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+    
     }
 
 
@@ -42,7 +42,7 @@ public class jumpPad : MonoBehaviour
                 
                 Rigidbody2D rb = one.GetComponent<Rigidbody2D>();
                 Rigidbody2D rb2 = two.GetComponent<Rigidbody2D>();
-                Debug.Log("big jump "+ rb2.velocity.y);
+               // Debug.Log("big jump "+ rb2.velocity.y);
 
                 float s;
                 if(rb2.velocity.x > 0)
