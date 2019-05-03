@@ -46,7 +46,7 @@ public class gravityBubble : MonoBehaviour
              Debug.Log("gravity no set");
         }
 
-        if(gravityDirection == "null")
+        if(gravityDirection == "")
         {
             gravityDirection = gravityPosition1;
         }
