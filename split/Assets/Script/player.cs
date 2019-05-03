@@ -19,6 +19,7 @@ public class player : MonoBehaviour
     GameObject otherPlayer;//the other player
     bool wantsToFlip;//went you want to a flip and are waiting for partner
     bool allowedToFlip;//ensure you dont flip continously
+    bool canJump;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,6 +27,7 @@ public class player : MonoBehaviour
         //changedRotation = true;
         wantsToFlip = false;
         allowedToFlip = true;
+        canJump = true;
 
         if(playerOne)
              otherPlayer = GameObject.FindWithTag("playerTwo");
@@ -80,9 +82,10 @@ public class player : MonoBehaviour
         {
             bool move = false;
             float x = 0f, y = 0f;
-            if ((Input.GetKeyDown(KeyCode.W) && playerOne) || (Input.GetKeyDown(KeyCode.UpArrow) && !playerOne))
+            if ((Input.GetKeyDown(KeyCode.W) && playerOne && canJump) || (Input.GetKeyDown(KeyCode.UpArrow) && !playerOne && canJump))
             {
                     y = -jumpVelocity;
+                    canJump = false;
             }
             if ((Input.GetKey(KeyCode.D) && playerOne) || (Input.GetKey(KeyCode.RightArrow) && !playerOne))
             {
@@ -108,9 +111,10 @@ public class player : MonoBehaviour
         {
             bool move = false;
             float x = 0f, y = 0f;
-            if ((Input.GetKeyDown(KeyCode.W) && playerOne) || (Input.GetKeyDown(KeyCode.UpArrow) && !playerOne))
+            if ((Input.GetKeyDown(KeyCode.W) && playerOne && canJump) || (Input.GetKeyDown(KeyCode.UpArrow) && !playerOne && canJump))
             {
                     y = jumpVelocity;
+                    canJump = false;
             }
             if ((Input.GetKey(KeyCode.D) && playerOne) || (Input.GetKey(KeyCode.RightArrow) && !playerOne))
             {
@@ -136,9 +140,10 @@ public class player : MonoBehaviour
         {
             bool move = false;
             float x = 0f, y = 0f;
-            if ((Input.GetKeyDown(KeyCode.W) && playerOne) || (Input.GetKeyDown(KeyCode.UpArrow) && !playerOne))
+            if ((Input.GetKeyDown(KeyCode.W) && playerOne && canJump) || (Input.GetKeyDown(KeyCode.UpArrow) && !playerOne && canJump))
             {
                 x = jumpVelocity;
+                canJump = false;
             }
             if ((Input.GetKey(KeyCode.D) && playerOne) || (Input.GetKey(KeyCode.RightArrow) && !playerOne))
             {
@@ -164,9 +169,10 @@ public class player : MonoBehaviour
         {
             bool move = false;
             float x = 0f, y = 0f;
-            if ((Input.GetKeyDown(KeyCode.W) && playerOne) || (Input.GetKeyDown(KeyCode.UpArrow) && !playerOne))
+            if ((Input.GetKeyDown(KeyCode.W) && playerOne && canJump) || (Input.GetKeyDown(KeyCode.UpArrow) && !playerOne && canJump))
             {
                 x = -jumpVelocity;
+                canJump = false;
             }
             if ((Input.GetKey(KeyCode.D) && playerOne) || (Input.GetKey(KeyCode.RightArrow) && !playerOne))
             {
@@ -329,7 +335,7 @@ public class player : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter2D(Collider2D collision)
+    void OnTriggerStay2D(Collider2D collision)
     {
         // other.attachedRigidbody.AddForce(-0.1F * other.attachedRigidbody.velocity);
 
@@ -339,6 +345,8 @@ public class player : MonoBehaviour
             Debug.Log("in the bubble"+bubble.gravityDirection);
             wantedRotation = bubble.gravityDirection;
         }
+
+     
     }
 
     void OnTriggerExit2D(Collider2D collision)
@@ -352,6 +360,15 @@ public class player : MonoBehaviour
                 wantedRotation = "up";
             else
                 wantedRotation = "down";
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        Debug.Log("collision");
+        if (collision.gameObject.tag == "ground")
+        {
+            canJump = true;
         }
     }
 
