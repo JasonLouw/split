@@ -12,6 +12,10 @@ public class gravityBubble : MonoBehaviour
     public string gravityPosition4;
 
 
+    public GameObject arrow1;
+    public GameObject arrow2;
+
+
     void Start()
     {
 
@@ -28,18 +32,34 @@ public class gravityBubble : MonoBehaviour
         if(gravityDirection == gravityPosition1)
         {
             gravityDirection = gravityPosition2;
+            if(arrow1 != null)
+                arrow1.GetComponent<arrowSwap>().GetComponent<arrowSwap>().changeDirection(gravityPosition2);
+            if (arrow2 != null)
+                arrow2.GetComponent<arrowSwap>().GetComponent<arrowSwap>().changeDirection(gravityPosition2);
         }
         else if(gravityDirection == gravityPosition2)
         {
             gravityDirection = gravityPosition3;
+            if (arrow1 != null)
+                arrow1.GetComponent<arrowSwap>().GetComponent<arrowSwap>().changeDirection(gravityPosition3);
+            if (arrow2 != null)
+                arrow2.GetComponent<arrowSwap>().GetComponent<arrowSwap>().changeDirection(gravityPosition3);
         }
         else if(gravityDirection == gravityPosition3)
         {
             gravityDirection = gravityPosition4;
+            if (arrow1 != null)
+                arrow1.GetComponent<arrowSwap>().GetComponent<arrowSwap>().changeDirection(gravityPosition4);
+            if (arrow2 != null)
+                arrow2.GetComponent<arrowSwap>().GetComponent<arrowSwap>().changeDirection(gravityPosition4);
         }
         else if(gravityDirection == gravityPosition4)
         {
             gravityDirection = gravityPosition1;
+            if (arrow1 != null)
+                arrow1.GetComponent<arrowSwap>().GetComponent<arrowSwap>().changeDirection(gravityPosition1);
+            if (arrow2 != null)
+                arrow2.GetComponent<arrowSwap>().GetComponent<arrowSwap>().changeDirection(gravityPosition1);
         }
         else
         {
@@ -49,6 +69,10 @@ public class gravityBubble : MonoBehaviour
         if(gravityDirection == "")
         {
             gravityDirection = gravityPosition1;
+            if (arrow1 != null)
+                arrow1.GetComponent<arrowSwap>().GetComponent<arrowSwap>().changeDirection(gravityPosition1);
+            if (arrow2 != null)
+                arrow2.GetComponent<arrowSwap>().GetComponent<arrowSwap>().changeDirection(gravityPosition1);
         }
     }
 }
