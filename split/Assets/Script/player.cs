@@ -205,7 +205,8 @@ public class player : MonoBehaviour
         {
             float x = rb.transform.position.x;
             float y = rb.transform.position.y;
-            Vector3 targetDir = new Vector3(x-90, y, 0);
+            float z = rb.transform.position.z;
+            Vector3 targetDir = new Vector3(x-90, y, z);
             var relativePos = targetDir - transform.position;
             var angle = Mathf.Atan2(relativePos.y, relativePos.x) * Mathf.Rad2Deg;
             var rotation = Quaternion.AngleAxis(angle, Vector3.forward);
@@ -216,7 +217,8 @@ public class player : MonoBehaviour
         {
             float x = rb.transform.position.x;
             float y = rb.transform.position.y;
-            Vector3 targetDir = new Vector3(x+90, y, 0);
+            float z = rb.transform.position.z;
+            Vector3 targetDir = new Vector3(x+90, y, z);
             var relativePos = targetDir - transform.position;
             var angle = Mathf.Atan2(relativePos.y, relativePos.x) * Mathf.Rad2Deg;
             var rotation = Quaternion.AngleAxis(angle, Vector3.forward);
@@ -227,7 +229,8 @@ public class player : MonoBehaviour
         {
             float x = rb.transform.position.x;
             float y = rb.transform.position.y;
-            Vector3 targetDir = new Vector3(x, y-90, 0);
+            float z = rb.transform.position.z;
+            Vector3 targetDir = new Vector3(x, y-90, z);
             var relativePos = targetDir - transform.position;
             var angle = Mathf.Atan2(relativePos.y, relativePos.x) * Mathf.Rad2Deg;
             var rotation = Quaternion.AngleAxis(angle, Vector3.forward);
@@ -238,7 +241,8 @@ public class player : MonoBehaviour
         {
             float x = rb.transform.position.x;
             float y = rb.transform.position.y;
-            Vector3 targetDir = new Vector3(x, y+90, 0);
+            float z = rb.transform.position.z;
+            Vector3 targetDir = new Vector3(x, y+90, z);
             var relativePos = targetDir - transform.position;
             var angle = Mathf.Atan2(relativePos.y, relativePos.x) * Mathf.Rad2Deg;
             var rotation = Quaternion.AngleAxis(angle, Vector3.forward);
@@ -256,7 +260,8 @@ public class player : MonoBehaviour
         allowedToFlip = false;
         float x = rb.transform.position.x;
         float y = rb.transform.position.y;
-        transform.position = new Vector3(x, (float)(y * (-1.0)), 0);
+        float z = rb.transform.position.z;
+        transform.position = new Vector3(x, (float)(y * (-1.0)), z);
         //changedRotation = false;
         if (position)
         {
