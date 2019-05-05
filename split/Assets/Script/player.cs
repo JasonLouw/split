@@ -20,26 +20,24 @@ public class player : MonoBehaviour
     bool wantsToFlip;//went you want to a flip and are waiting for partner
     bool allowedToFlip;//ensure you dont flip continously
     bool canJump;
-<<<<<<< HEAD
     Animator anim;//animation controller
     // Start is called before the first frame update
-    void Start()
-    {
-        anim = GetComponent<Animator>();
-=======
 
     public AudioClip realmSwitch;
     public AudioSource realmSwitchSound;
-
     public AudioClip realmSwitchPowerUp;
     public AudioSource realmSwitchSoundPowerUp;
 
-    // Start is called before the first frame update
     void Start()
     {
+        anim = GetComponent<Animator>();
+
+      
+
         realmSwitchSound.clip = realmSwitch;
         realmSwitchSoundPowerUp.clip = realmSwitchPowerUp; 
->>>>>>> 03cb9dc61617fc85b04c119d3a3fa70d4f79f3c6
+        
+        
         rb.gravityScale = 0f;//this ensures normal game gravity doesnt influence character
         //changedRotation = true;
         wantsToFlip = false;
