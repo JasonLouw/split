@@ -20,9 +20,18 @@ public class player : MonoBehaviour
     bool wantsToFlip;//went you want to a flip and are waiting for partner
     bool allowedToFlip;//ensure you dont flip continously
     bool canJump;
+
+    public AudioClip realmSwitch;
+    public AudioSource realmSwitchSound;
+
+    public AudioClip realmSwitchPowerUp;
+    public AudioSource realmSwitchSoundPowerUp;
+
     // Start is called before the first frame update
     void Start()
     {
+        realmSwitchSound.clip = realmSwitch;
+        realmSwitchSoundPowerUp.clip = realmSwitchPowerUp; 
         rb.gravityScale = 0f;//this ensures normal game gravity doesnt influence character
         //changedRotation = true;
         wantsToFlip = false;
@@ -49,6 +58,7 @@ public class player : MonoBehaviour
 
         if ((!Input.GetKey(KeyCode.S) && playerOne) || (!Input.GetKey(KeyCode.DownArrow) && !playerOne))
         {
+            realmSwitchSoundPowerUp.Play();
             allowedToFlip = true;
         }
 
@@ -56,7 +66,8 @@ public class player : MonoBehaviour
         {
             otherPlayer.GetComponent<player>().flip();
             flip();
-            
+            realmSwitchSoundPowerUp.Stop();
+
         }
         else if((Input.GetKey(KeyCode.S) && playerOne) || (Input.GetKey(KeyCode.DownArrow) && !playerOne))
         {
@@ -64,6 +75,7 @@ public class player : MonoBehaviour
         }
         else
         {
+          
             wantsToFlip = false;
         }
         rotate();
@@ -257,6 +269,8 @@ public class player : MonoBehaviour
 
     public void flip()//flips over axis
     {
+        
+        realmSwitchSound.Play();
         allowedToFlip = false;
         float x = rb.transform.position.x;
         float y = rb.transform.position.y;
