@@ -26,14 +26,17 @@ public class jumpPad : MonoBehaviour
     {
         if (collision.gameObject.tag == "playerOne"|| collision.gameObject.tag == "playerTwo")
         {
+
+            Debug.Log(collision.gameObject.tag);
             //gravityBubble bubble = (gravityBubble)collision.gameObject.GetComponent(typeof(gravityBubble));
             if(one == null)
             {
+                Debug.Log("first");
                 one = collision.gameObject;
-                //collision.gameObject.GetComponent<Rigidbody2D>().AddForce(30, 0, 0);
             }
             else
             {
+                Debug.Log("second");
                 two = collision.gameObject;
             }
 
@@ -42,6 +45,7 @@ public class jumpPad : MonoBehaviour
                 
                 Rigidbody2D rb = one.GetComponent<Rigidbody2D>();
                 Rigidbody2D rb2 = two.GetComponent<Rigidbody2D>();
+                Debug.Log("boom from: "+collision.gameObject.tag+" speed "+ rb2.velocity.y);
                // Debug.Log("big jump "+ rb2.velocity.y);
 
                 float s;
@@ -54,14 +58,8 @@ public class jumpPad : MonoBehaviour
                     s = rb2.velocity.y;
                 }
 
-                if(rb.transform.position.y < 0)
-                {
-                    rb.velocity = new Vector2(rb.velocity.x,  s);
-                }
-                else
-                {
-                    rb.velocity = new Vector2(rb.velocity.x,  s);  
-                }
+                rb.velocity = new Vector2(rb.velocity.x,  s);  
+                
             }
         }
     }

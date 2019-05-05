@@ -31,7 +31,6 @@ public class arrowSwap : MonoBehaviour
     {
         if (wantedRotation == "down" && wantedRotation != currentRotation)
         {
-            Debug.Log("go up");
             float x = rb.transform.position.x;
             float y = rb.transform.position.y;
             Vector3 targetDir = new Vector3(x - 90, y, 0);
@@ -43,8 +42,6 @@ public class arrowSwap : MonoBehaviour
         }
         else if (wantedRotation == "up" && wantedRotation != currentRotation)
         {
-            if(rb == null)
-              Debug.Log("go down");
             float x = rb.transform.position.x;
             float y = rb.transform.position.y;
             Vector3 targetDir = new Vector3(x + 90, y, 0);
@@ -56,7 +53,6 @@ public class arrowSwap : MonoBehaviour
         }
         else if (wantedRotation == "right" && wantedRotation != currentRotation)
         {
-            Debug.Log("go left");
             float x = rb.transform.position.x;
             float y = rb.transform.position.y;
             Vector3 targetDir = new Vector3(x, y - 90, 0);
@@ -68,7 +64,6 @@ public class arrowSwap : MonoBehaviour
         }
         else if (wantedRotation == "left" && wantedRotation != currentRotation)
         {
-            Debug.Log("go right");
             float x = rb.transform.position.x;
             float y = rb.transform.position.y;
             Vector3 targetDir = new Vector3(x, y + 90, 0);
@@ -80,7 +75,7 @@ public class arrowSwap : MonoBehaviour
         }
         else
         {
-             Debug.Log("not rotating");
+
         }
     }
 }

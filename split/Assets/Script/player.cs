@@ -20,9 +20,11 @@ public class player : MonoBehaviour
     bool wantsToFlip;//went you want to a flip and are waiting for partner
     bool allowedToFlip;//ensure you dont flip continously
     bool canJump;
+    Animator anim;//animation controller
     // Start is called before the first frame update
     void Start()
     {
+        anim = GetComponent<Animator>();
         rb.gravityScale = 0f;//this ensures normal game gravity doesnt influence character
         //changedRotation = true;
         wantsToFlip = false;
@@ -44,6 +46,9 @@ public class player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+       
+
+      //  animationControls();
         betterJump();
         movement();
 
@@ -76,12 +81,47 @@ public class player : MonoBehaviour
         return wantsToFlip;
     }
 
+    // public void animationControls()
+    // {
+         
+    //      if(rb.velocity.x == 0)
+    //      {
+    //         anim.SetBool("walking", false);
+    //      }
+    //      else if(rb.velocity.x > 0)
+    //      {
+    //         anim.SetBool("walking", true);
+    //         if(0 > rb.transform.position.y)
+    //         {
+                 
+    //         }
+    //         else
+    //         {
+                 
+    //         }
+    //      }
+    //      else if(rb.velocity.x < 0)
+    //      {
+    //          //Debug.Log(rb.velocity.x);
+    //         anim.SetBool("walking", true);
+    //         if(0 < rb.transform.position.y)
+    //         {
+    //              //anim.transform.eulerAngles = new Vector3(anim.transform.eulerAngles.x, 180, anim.transform.eulerAngles.z);
+    //         }
+    //         else
+    //         {
+    //             // anim.transform.eulerAngles = new Vector3(anim.transform.eulerAngles.x, 0, anim.transform.eulerAngles.z);
+    //         }
+    //      }
+    // }
+
     private void movement()
     {
         if(currentRotation == "up" )
         {
             bool move = false;
             float x = 0f, y = 0f;
+            anim.SetBool("walking", false);
             if ((Input.GetKeyDown(KeyCode.W) && playerOne && canJump) || (Input.GetKeyDown(KeyCode.UpArrow) && !playerOne && canJump))
             {
                     y = -jumpVelocity;
@@ -89,12 +129,16 @@ public class player : MonoBehaviour
             }
             if ((Input.GetKey(KeyCode.D) && playerOne) || (Input.GetKey(KeyCode.RightArrow) && !playerOne))
             {
+                anim.transform.eulerAngles = new Vector3(transform.eulerAngles.x, 180, transform.eulerAngles.z);
                 x += movementVelocity;
                 move = true;
+                anim.SetBool("walking", true);
             }
             if ((Input.GetKey(KeyCode.A) && playerOne) || (Input.GetKey(KeyCode.LeftArrow) && !playerOne))
             {
+                anim.transform.eulerAngles = new Vector3(transform.eulerAngles.x, 0, transform.eulerAngles.z);
                 x += movementVelocity * -1;
+                anim.SetBool("walking", true);
                 move = true;
             }
 
@@ -111,6 +155,7 @@ public class player : MonoBehaviour
         {
             bool move = false;
             float x = 0f, y = 0f;
+            anim.SetBool("walking", false);
             if ((Input.GetKeyDown(KeyCode.W) && playerOne && canJump) || (Input.GetKeyDown(KeyCode.UpArrow) && !playerOne && canJump))
             {
                     y = jumpVelocity;
@@ -118,13 +163,17 @@ public class player : MonoBehaviour
             }
             if ((Input.GetKey(KeyCode.D) && playerOne) || (Input.GetKey(KeyCode.RightArrow) && !playerOne))
             {
+                anim.transform.eulerAngles = new Vector3(transform.eulerAngles.x, 0, transform.eulerAngles.z);
                 x += movementVelocity;
                 move = true;
+                anim.SetBool("walking", true);
             }
             if ((Input.GetKey(KeyCode.A) && playerOne) || (Input.GetKey(KeyCode.LeftArrow) && !playerOne))
             {
+                anim.transform.eulerAngles = new Vector3(transform.eulerAngles.x, 180, transform.eulerAngles.z);
                 x += movementVelocity * -1;
                 move = true;
+                anim.SetBool("walking", true);
             }
 
             if (move)
@@ -140,6 +189,7 @@ public class player : MonoBehaviour
         {
             bool move = false;
             float x = 0f, y = 0f;
+            anim.SetBool("walking", false);
             if ((Input.GetKeyDown(KeyCode.W) && playerOne && canJump) || (Input.GetKeyDown(KeyCode.UpArrow) && !playerOne && canJump))
             {
                 x = jumpVelocity;
@@ -147,13 +197,18 @@ public class player : MonoBehaviour
             }
             if ((Input.GetKey(KeyCode.D) && playerOne) || (Input.GetKey(KeyCode.RightArrow) && !playerOne))
             {
+                 // anim.transform.eulerAngles = new Vector3(anim.transform.eulerAngles.x, anim.transform.eulerAngles.y, 90);
                 y += movementVelocity;
                 move = true;
+                anim.SetBool("walking", true);
             }
             if ((Input.GetKey(KeyCode.A) && playerOne) || (Input.GetKey(KeyCode.LeftArrow) && !playerOne))
             {
+   
+                //anim.transform.eulerAngles = new Vector3(anim.transform.eulerAngles.x, anim.transform.eulerAngles.y, -90);
                 y += movementVelocity * -1;
                 move = true;
+                anim.SetBool("walking", true);
             }
 
             if (move)
@@ -169,6 +224,7 @@ public class player : MonoBehaviour
         {
             bool move = false;
             float x = 0f, y = 0f;
+            anim.SetBool("walking", false);
             if ((Input.GetKeyDown(KeyCode.W) && playerOne && canJump) || (Input.GetKeyDown(KeyCode.UpArrow) && !playerOne && canJump))
             {
                 x = -jumpVelocity;
@@ -176,13 +232,17 @@ public class player : MonoBehaviour
             }
             if ((Input.GetKey(KeyCode.D) && playerOne) || (Input.GetKey(KeyCode.RightArrow) && !playerOne))
             {
+                anim.transform.eulerAngles = new Vector3(180, anim.transform.eulerAngles.y, anim.transform.eulerAngles.z);
                 y += movementVelocity;
                 move = true;
+                anim.SetBool("walking", true);
             }
             if ((Input.GetKey(KeyCode.A) && playerOne) || (Input.GetKey(KeyCode.LeftArrow) && !playerOne))
             {
+                anim.transform.eulerAngles = new Vector3(0, anim.transform.eulerAngles.y, anim.transform.eulerAngles.z);
                 y += movementVelocity * -1;
                 move = true;
+                anim.SetBool("walking", true);
             }
 
             if (move)
@@ -347,7 +407,7 @@ public class player : MonoBehaviour
         if (collision.gameObject.tag == "bubble")
         {
             gravityBubble bubble = (gravityBubble)collision.gameObject.GetComponent(typeof(gravityBubble));
-            Debug.Log("in the bubble"+bubble.gravityDirection);
+           // Debug.Log("in the bubble"+bubble.gravityDirection);
             wantedRotation = bubble.gravityDirection;
         }
 
@@ -370,7 +430,7 @@ public class player : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("collision");
+       // Debug.Log("collision");
         if (collision.gameObject.tag == "ground")
         {
             canJump = true;
