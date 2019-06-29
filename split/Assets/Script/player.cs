@@ -23,17 +23,17 @@ public class player : MonoBehaviour
     Animator anim;//animation controller
     // Start is called before the first frame update
 
-    public AudioClip realmSwitch;
-    public AudioSource realmSwitchSound;
+    // public AudioClip realmSwitch;
+    // public AudioSource realmSwitchSound;
 
-    public AudioClip realmSwitchPowerUp;
-    public AudioSource realmSwitchSoundPowerUp;
+    // public AudioClip realmSwitchPowerUp;
+    // public AudioSource realmSwitchSoundPowerUp;
 
 
     void Start()
     {
-        realmSwitchSound.clip = realmSwitch;
-        realmSwitchSoundPowerUp.clip = realmSwitchPowerUp;
+        // realmSwitchSound.clip = realmSwitch;
+        // realmSwitchSoundPowerUp.clip = realmSwitchPowerUp;
 
         // realmSwitchSoundPowerUp.Stop();
         // realmSwitchSoundPowerUp.Stop();
@@ -59,15 +59,20 @@ public class player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
-
-      //  animationControls();
         betterJump();
+        
+        flipFunction();
+        rotate();
         movement();
+        rb.AddForce(transform.up * gravity * gravityMultiplier * Time.deltaTime);//this is the gravity for the character
+        //rb.AddForce(transform.right * gravity);
+    }
 
+    public void flipFunction()
+    {
         if ((!Input.GetKey(KeyCode.S) && playerOne) || (!Input.GetKey(KeyCode.DownArrow) && !playerOne))
         {
-            realmSwitchSoundPowerUp.Play();
+            // realmSwitchSoundPowerUp.Play();
             allowedToFlip = true;
         }
 
@@ -75,8 +80,8 @@ public class player : MonoBehaviour
         {
             otherPlayer.GetComponent<player>().flip();
             flip();
-            realmSwitchSound.Play();
-            realmSwitchSoundPowerUp.Stop();
+            // realmSwitchSound.Play();
+            // realmSwitchSoundPowerUp.Stop();
             
         }
         else if((Input.GetKey(KeyCode.S) && playerOne) || (Input.GetKey(KeyCode.DownArrow) && !playerOne))
@@ -87,49 +92,12 @@ public class player : MonoBehaviour
         {
             wantsToFlip = false;
         }
-        rotate();
-        rb.AddForce(transform.up * gravity * gravityMultiplier * Time.deltaTime);//this is the gravity for the character
-        //rb.AddForce(transform.right * gravity);
     }
 
     public bool getOtherFlip()
     {
         return wantsToFlip;
     }
-
-    // public void animationControls()
-    // {
-         
-    //      if(rb.velocity.x == 0)
-    //      {
-    //         anim.SetBool("walking", false);
-    //      }
-    //      else if(rb.velocity.x > 0)
-    //      {
-    //         anim.SetBool("walking", true);
-    //         if(0 > rb.transform.position.y)
-    //         {
-                 
-    //         }
-    //         else
-    //         {
-                 
-    //         }
-    //      }
-    //      else if(rb.velocity.x < 0)
-    //      {
-    //          //Debug.Log(rb.velocity.x);
-    //         anim.SetBool("walking", true);
-    //         if(0 < rb.transform.position.y)
-    //         {
-    //              //anim.transform.eulerAngles = new Vector3(anim.transform.eulerAngles.x, 180, anim.transform.eulerAngles.z);
-    //         }
-    //         else
-    //         {
-    //             // anim.transform.eulerAngles = new Vector3(anim.transform.eulerAngles.x, 0, anim.transform.eulerAngles.z);
-    //         }
-    //      }
-    // }
 
     private void movement()
     {
@@ -212,17 +180,16 @@ public class player : MonoBehaviour
                 canJump = false;
             }
             if ((Input.GetKey(KeyCode.D) && playerOne) || (Input.GetKey(KeyCode.RightArrow) && !playerOne))
-            {
-                 // anim.transform.eulerAngles = new Vector3(anim.transform.eulerAngles.x, anim.transform.eulerAngles.y, 90);
-                y += movementVelocity;
+            { 
+                transform.rotation = Quaternion.Euler(0, transform.rotation.y, -90);
+                y += movementVelocity * -1;
                 move = true;
                 anim.SetBool("walking", true);
             }
             if ((Input.GetKey(KeyCode.A) && playerOne) || (Input.GetKey(KeyCode.LeftArrow) && !playerOne))
             {
-   
-                //anim.transform.eulerAngles = new Vector3(anim.transform.eulerAngles.x, anim.transform.eulerAngles.y, -90);
-                y += movementVelocity * -1;
+                transform.rotation = Quaternion.Euler(180, transform.rotation.y, -90);
+                y += movementVelocity;
                 move = true;
                 anim.SetBool("walking", true);
             }
@@ -248,14 +215,14 @@ public class player : MonoBehaviour
             }
             if ((Input.GetKey(KeyCode.D) && playerOne) || (Input.GetKey(KeyCode.RightArrow) && !playerOne))
             {
-                anim.transform.eulerAngles = new Vector3(180, anim.transform.eulerAngles.y, anim.transform.eulerAngles.z);
+                transform.rotation = Quaternion.Euler(0, transform.rotation.y, 90);
                 y += movementVelocity;
                 move = true;
                 anim.SetBool("walking", true);
             }
             if ((Input.GetKey(KeyCode.A) && playerOne) || (Input.GetKey(KeyCode.LeftArrow) && !playerOne))
             {
-                anim.transform.eulerAngles = new Vector3(0, anim.transform.eulerAngles.y, anim.transform.eulerAngles.z);
+                transform.rotation = Quaternion.Euler(180, transform.rotation.y, 90);
                 y += movementVelocity * -1;
                 move = true;
                 anim.SetBool("walking", true);
