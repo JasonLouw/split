@@ -54,6 +54,8 @@ public class player : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         gravity = -9.81f;
+        rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;//this should prevent fast moving objects from going through walls, heavy on processing
+       // rb.collisionDetectionMode = CollisionDetectionMode2D.Discrete;//not as heavy but object will do through walls
     }
 
     // Update is called once per frame
@@ -66,6 +68,7 @@ public class player : MonoBehaviour
         movement();
         rb.AddForce(transform.up * gravity * gravityMultiplier * Time.deltaTime);//this is the gravity for the character
         //rb.AddForce(transform.right * gravity);
+        
     }
 
     public void flipFunction()

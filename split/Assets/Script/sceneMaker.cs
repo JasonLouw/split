@@ -114,11 +114,11 @@ public class sceneMaker : MonoBehaviour
  
                 virtualPhoto.ReadPixels(new Rect(0, 0, resolution, resolution), (int)xPos * resolution, (int)yPos * resolution);
  
-                Debug.Log("Rendered and copied chunk " + (xPos + 1) + ":" + (yPos + 1));
+                //Debug.Log("Rendered and copied chunk " + (xPos + 1) + ":" + (yPos + 1));
             }
         }
  
-        Debug.Log("All chunks rendered! Some final adjustments and picture should be saved!");
+        //Debug.Log("All chunks rendered! Some final adjustments and picture should be saved!");
  
         RenderTexture.active = null;
         renderCamera.targetTexture = null;
@@ -127,6 +127,6 @@ public class sceneMaker : MonoBehaviour
  
         System.IO.File.WriteAllBytes(@"C:\Users\mjaso\Desktop\sceneImages\image.png", bytes);
  
-        Debug.Log("All done! Always happy to help you :)");
+        //Debug.Log("All done! Always happy to help you :)");
     }
 }
